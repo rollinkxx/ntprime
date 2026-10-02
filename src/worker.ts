@@ -8,13 +8,13 @@ export interface Env {
 type Session = { token: string; deviceId?: string; createdAt: number; liveEnabled: boolean };
 const ALLOWED = new Set(['/platform/private/v2/profile', '/bank/v1/read', '/bo-assets/v6/assets', '/candles/v1/', '/bo-deals-history/v3/deals/trade']);
 const DEMO_ASSETS = [
-  { ric: 'EUR/USD', name: 'EUR/USD', typeName: 'Currencies' }, { ric: 'GBP/USD-DXF', name: 'GBP/USD', typeName: 'Currencies' },
+  { ric: 'CRYPTO_IDX', name: 'Crypto IDX', typeName: '5ST' }, { ric: 'EUR/USD', name: 'EUR/USD', typeName: 'Currencies' }, { ric: 'GBP/USD-DXF', name: 'GBP/USD', typeName: 'Currencies' },
   { ric: 'USD/JPY-DXF', name: 'USD/JPY', typeName: 'Currencies' }, { ric: 'BTCUSD-OTC', name: 'Bitcoin (OTC)', typeName: 'Crypto' },
   { ric: 'ETHUSD-OTC', name: 'Ethereum (OTC)', typeName: 'Crypto' }, { ric: 'XAU/USD', name: 'Gold / USD', typeName: 'Commodities' }
 ];
 const DEMO_CANDLES = (n = 72) => Array.from({ length: n }, (_, i) => {
-  const t = Date.now() - (n - i) * 60_000; const base = 1.081 + Math.sin(i / 5) * .003 + i * .00005; const open = base;
-  const close = base + Math.sin(i * 1.7) * .0015; return { time: t, open, high: Math.max(open, close) + .0008, low: Math.min(open, close) - .0008, close };
+  const t = Date.now() - (n - i) * 60_000; const base = 100 + Math.sin(i / 5) * 1.8 + i * .03; const open = base;
+  const close = base + Math.sin(i * 1.7) * .9; return { time: t, open, high: Math.max(open, close) + .45, low: Math.min(open, close) - .45, close };
 });
 
 const enc = (v: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(v))).replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
