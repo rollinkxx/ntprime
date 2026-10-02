@@ -42,7 +42,7 @@ const ALLOWED_READ_PATHS = [
   '/bo-deals-history/v3/deals/trade',
 ];
 const DEMO_ASSETS = [
-  { ric: 'CRYPTO_IDX', name: 'Crypto IDX', typeName: '5ST' },
+  { ric: 'Z-CRY/IDX', name: 'Crypto IDX', typeName: '5ST' },
   { ric: 'EUR/USD', name: 'EUR/USD', typeName: 'Currencies' },
   { ric: 'GBP/USD-DXF', name: 'GBP/USD', typeName: 'Currencies' },
   { ric: 'USD/JPY-DXF', name: 'USD/JPY', typeName: 'Currencies' },
@@ -50,6 +50,14 @@ const DEMO_ASSETS = [
   { ric: 'ETHUSD-OTC', name: 'Ethereum (OTC)', typeName: 'Crypto' },
   { ric: 'XAU/USD', name: 'Gold / USD', typeName: 'Commodities' },
 ];
+const ASSET_RICS: Record<string, string> = {
+  'Crypto IDX': 'Z-CRY/IDX',
+  'Bitcoin (OTC)': 'BTCUSD-OTC',
+  'Ethereum (OTC)': 'ETHUSD-OTC',
+  'EUR/USD': 'EURO',
+  'GBP/USD': 'GBP/USD-DXF',
+  'USD/JPY': 'USD/JPY-DXF',
+};
 const DEMO_CANDLES = (n = 72) => Array.from({ length: n }, (_, i) => {
   const t = Date.now() - (n - i) * 60_000;
   const base = 100 + Math.sin(i / 5) * 1.8 + i * 0.03;
@@ -411,13 +419,22 @@ export default {
       const session = await open(cookieValue(request, 'np_session'), secret);
       if (!session?.token) return json({ candles: DEMO_CANDLES(), source: 'demo', authenticated: false });
       const asset = url.searchParams.get('asset') || 'Crypto IDX';
+      const ric = ASSET_RICS[asset] || asset;
       const end = Math.floor(Date.now() / 1000); const start = end - 72 * 60;
-      const query = new URLSearchParams({ asset, ric: asset, period: '60', interval: '60', start: String(start), end: String(end) });
-      const response = await upstreamRead(request, env, session, '/candles/v1/', `?${query}`);
-      const data = await response.json().catch(() => ({}));
-      const candles = response.ok ? findCandles(data).slice(-200) : [];
-      if (candles.length >= 5) return json({ candles, source: 'stockity', authenticated: true, asset });
-      return json({ candles: DEMO_CANDLES(), source: 'demo-fallback', authenticated: true, asset, upstreamStatus: response.status }, 200);
+      const queries = [
+        new URLSearchParams({ asset: ric, ric, period: '60', interval: '60', start: String(start), end: String(end) }),
+        new URLSearchParams({ ric, timeframe: '1m', start: String(start), end: String(end) }),
+      ];
+      const paths = [`/candles/v1/${encodeURIComponent(ric)}`, `/candles/public/v1/${encodeURIComponent(ric)}`, '/candles/v1/'];
+      let upstreamStatus = 502;
+      for (const path of paths) for (const query of queries) {
+        const response = await upstreamRead(request, env, session, path, `?${query}`);
+        upstreamStatus = response.status;
+        const data = await response.json().catch(() => ({}));
+        const candles = response.ok ? findCandles(data).slice(-200) : [];
+        if (candles.length >= 5) return json({ candles, source: 'stockity', authenticated: true, asset, ric });
+      }
+      return json({ candles: DEMO_CANDLES(), source: 'demo-fallback', authenticated: true, asset, ric, upstreamStatus }, 200);
     }
 
     if (url.pathname.startsWith('/api/stockity/')) {
