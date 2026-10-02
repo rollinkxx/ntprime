@@ -20,7 +20,7 @@ async function login(){
   if(document.getElementById('loginModal'))return;
   const modal=document.createElement('div');
   modal.id='loginModal';
-  modal.innerHTML=`<div class="login-backdrop"><form class="login-card" id="loginForm"><button type="button" class="login-close" id="loginClose" aria-label="Tutup">×</button><span class="eyebrow">SECURE CONNECTION</span><h2>Login Stockity</h2><p>Password hanya dikirim melalui HTTPS ke Worker dan tidak disimpan di browser.</p><label>Email<input id="loginEmail" type="email" autocomplete="username" required placeholder="nama@email.com"></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Password Stockity"></label><div class="login-error" id="loginError" role="alert"></div><button class="primary full" id="loginSubmit" type="submit">Masuk</button></form></div>`;
+  modal.innerHTML=`<div class="login-backdrop"><form class="login-card" id="loginForm"><button type="button" class="login-close" id="loginClose" aria-label="Tutup">×</button><span class="eyebrow">SECURE CONNECTION</span><h2>Login Stockity</h2><p>Password hanya dikirim melalui HTTPS ke Worker dan tidak disimpan di browser.</p><label>Email<input id="loginEmail" type="email" autocomplete="username" required placeholder="nama@email.com"></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Password Stockity"></label><label id="loginOtpWrap" hidden>Kode OTP<input id="loginOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="Kode verifikasi Stockity"></label><div class="login-error" id="loginError" role="alert"></div><button class="primary full" id="loginSubmit" type="submit">Masuk</button></form></div>`;
   document.body.appendChild(modal);
   const close=()=>modal.remove();
   document.getElementById('loginClose')?.addEventListener('click',close);
@@ -33,8 +33,14 @@ async function login(){
     const submit=document.getElementById('loginSubmit') as HTMLButtonElement;
     const error=document.getElementById('loginError') as HTMLElement;
     submit.disabled=true; submit.textContent='Memeriksa...'; error.textContent='';
-    try{await api('/api/auth/login',{method:'POST',body:JSON.stringify({email,password})});state.logged=true;close();toast('Login berhasil. Live tetap terkunci sampai diaktifkan.');render();}
-    catch(e){error.textContent=(e as Error).message;submit.disabled=false;submit.textContent='Masuk';}
+    try{
+      const twoFactorStep=submit.dataset.otp==='true';
+      const otp=(document.getElementById('loginOtp') as HTMLInputElement).value.trim();
+      const result=await api(twoFactorStep?'/api/auth/2fa':'/api/auth/login',{method:'POST',body:JSON.stringify(twoFactorStep?{password,otp}:{email,password})});
+      if(result.twoFactorRequired){submit.dataset.otp='true';(document.getElementById('loginOtpWrap') as HTMLElement).hidden=false;submit.disabled=false;submit.textContent='Verifikasi OTP';error.textContent='Masukkan kode OTP yang diminta Stockity.';(document.getElementById('loginOtp') as HTMLInputElement).focus();return;}
+      state.logged=true;close();toast('Login berhasil. Live tetap terkunci sampai diaktifkan.');render();
+    }
+    catch(e){error.textContent=(e as Error).message;submit.disabled=false;submit.textContent=submit.dataset.otp==='true'?'Verifikasi OTP':'Masuk';}
   });
 }
 render();
