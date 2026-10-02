@@ -50,3 +50,12 @@ Seluruh pengujian protokol memakai `fetch` mock lokal, bukan host Stockity. Tida
 ## Batasan
 
 Kontrak ini diambil dari APK yang dilampirkan, bukan dokumentasi publik resmi yang menjamin API stabil. Stockity dapat mengubah endpoint atau schema. Setelah kode dipublikasikan, pemilik akun perlu menguji login sendiri melalui situs; password atau OTP tidak boleh dikirim melalui chat. Perubahan ini memperbaiki autentikasi saja dan tidak mengaktifkan order demo maupun live.
+
+
+## Tindak lanjut dari screenshot login
+
+Screenshot pengguna memperlihatkan bahwa API Stockity menolak request karena header `User-Agent` tidak ada. Walaupun request sign-in yang terlihat langsung di `AuthService` tidak menetapkan header itu secara eksplisit, APK memuat User-Agent Android Newton Prime yang digunakan oleh lapisan aplikasinya. Worker kini meneruskan User-Agent browser yang diterima; bila header itu tidak tersedia, Worker memakai nilai Android Newton Prime yang ditemukan pada APK. Header tersebut dikirim pada sign-in awal, validasi OTP, dan sign-in ulang.
+
+Screenshot juga menunjukkan field OTP tampil sebelum challenge. Penyebabnya adalah aturan `.login-card label { display: block; }` menimpa atribut HTML `hidden`. CSS kini menambahkan aturan spesifik agar field itu tetap tidak terlihat sampai server meminta OTP.
+
+Setelah hotfix, `npm run typecheck`, `npm run build`, dan `git diff --check` lulus. Mock menegaskan bahwa browser User-Agent diteruskan di ketiga request OTP, fallback APK digunakan saat User-Agent tidak tersedia, dan field OTP tersembunyi pada CSS hasil build. Login live belum dites dengan kredensial akun.

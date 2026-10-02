@@ -33,6 +33,7 @@ type StockityResponse = {
 
 const PRIMARY_API = 'https://api.stockity1.id';
 const SECONDARY_API = 'https://api.stockity1.com';
+const DEFAULT_STOCKITY_USER_AGENT = 'Mozilla/5.0 (Linux; Android 14; NewtonPrime) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36 NewtonPrimeWebView';
 const ALLOWED_READ_PATHS = [
   '/platform/private/v2/profile',
   '/bank/v1/read',
@@ -102,6 +103,9 @@ function getApiBases(env: Env) {
   const configured = env.STOCKITY_API_BASE?.trim();
   return configured ? [configured.replace(/\/+$/, '')] : [PRIMARY_API, SECONDARY_API];
 }
+function stockityUserAgent(request: Request) {
+  return request.headers.get('user-agent') || DEFAULT_STOCKITY_USER_AGENT;
+}
 function readString(value: unknown) {
   return typeof value === 'string' && value.length ? value : typeof value === 'number' ? String(value) : undefined;
 }
@@ -136,12 +140,14 @@ async function stockityLogin(
   deviceId: string,
   email: string,
   password: string,
+  userAgent: string,
   options: { sessionCookie?: string; twoFaToken?: string } = {},
 ) {
   const headers = new Headers({
     'content-type': 'application/json',
     'Device-Id': deviceId,
     'Device-Type': 'web',
+    'User-Agent': userAgent,
   });
   if (options.sessionCookie) headers.set('cookie', options.sessionCookie);
 
@@ -193,6 +199,7 @@ export default {
 
       const email = body.email.trim();
       const deviceId = crypto.randomUUID().replaceAll('-', '');
+      const userAgent = stockityUserAgent(request);
       const bases = getApiBases(env);
       let lastError: unknown;
 
@@ -200,7 +207,7 @@ export default {
         const base = bases[index];
         let response: Response;
         try {
-          response = await stockityLogin(base, deviceId, email, body.password);
+          response = await stockityLogin(base, deviceId, email, body.password, userAgent);
         } catch (error) {
           lastError = error;
           continue;
@@ -262,10 +269,12 @@ export default {
         return json({ error: 'Password dan kode OTP wajib diisi.' }, 400);
       }
 
+      const userAgent = stockityUserAgent(request);
       const headers = new Headers({
         'content-type': 'application/json',
         'Device-Id': pending.deviceId,
         'Device-Type': 'web',
+        'User-Agent': userAgent,
         cookie: pending.sessionCookie,
       });
       let otpResponse: Response;
@@ -295,7 +304,7 @@ export default {
       const finalCookie = extractSessionCookie(otpResponse.headers) || pending.sessionCookie;
       let loginResponse: Response;
       try {
-        loginResponse = await stockityLogin(pending.apiBase, pending.deviceId, pending.email, body.password, {
+        loginResponse = await stockityLogin(pending.apiBase, pending.deviceId, pending.email, body.password, userAgent, {
           sessionCookie: finalCookie,
           twoFaToken,
         });
