@@ -6,7 +6,7 @@ const state = {
   asset: 'Crypto IDX', strategy: 'Momentum' as StrategyName, bid: 10_000, maxDailyLoss: 50_000, maxDailyProfit: 0,
   maxTradesPerDay: 20, minConfidence: .55, martingale: true, multiplier: 2, maxMartingale: 5,
   signal: '', candles: [] as Candle[], feed: 'demo' as FeedSource, running: false, logged: false, ticks: 0,
-  paperBalance: 140_000, paperWins: 0, paperLosses: 0, openPaperTrade: null as { direction: 'CALL'|'PUT'; bid: number; entryPrice: number } | null,
+  paperBalance: 140_000, paperWins: 0, paperLosses: 0, openPaperTrade: null as { direction: 'CALL'|'PUT'; bid: number; entryPrice: number; entryCandleTime: number } | null,
   activity: [] as string[], decision: null as StrategyDecision | null,
   risk: { dailyPnl: 0, tradesToday: 0, emergencyStop: false, martingaleStep: 0 } as RiskSnapshot,
 };
@@ -47,11 +47,15 @@ function settlePaperTrade(exitPrice: number) {
 }
 function botTick() {
   const last = state.candles.at(-1); if (!last) return;
-  const close = last.close; settlePaperTrade(close);
+  const close = last.close;
+  // A paper position expires on the next completed candle. Never settle against
+  // the same candle used for entry: with a 5s engine and 1m candles that would
+  // compare price === entryPrice and mark every CALL/PUT as a loss.
+  if (state.openPaperTrade && last.time > state.openPaperTrade.entryCandleTime) settlePaperTrade(close);
   state.ticks++; state.decision = evaluateStrategy(state.candles, state.strategy);
   const risk = checkRisk({ maxBid: 100_000, maxDailyLoss: state.maxDailyLoss, maxDailyProfit: state.maxDailyProfit, maxTradesPerDay: state.maxTradesPerDay, cooldownMs: 5_000, minConfidence: state.minConfidence, martingaleEnabled: state.martingale, martingaleMultiplier: state.multiplier, maxMartingaleStep: state.maxMartingale }, state.risk, state.bid, state.decision);
   if (risk.allowed && !state.openPaperTrade) {
-    state.risk.lastDecisionAt = Date.now(); state.openPaperTrade = { direction: state.decision.direction as 'CALL'|'PUT', bid: risk.bid, entryPrice: close };
+    state.risk.lastDecisionAt = Date.now(); state.openPaperTrade = { direction: state.decision.direction as 'CALL'|'PUT', bid: risk.bid, entryPrice: close, entryCandleTime: last.time };
     addActivity(`PAPER OPEN ${state.decision.direction} · ${money(risk.bid)} · K${state.risk.martingaleStep} @ ${close.toFixed(4)}`);
   } else if (!state.openPaperTrade) addActivity(`RISK BLOCK · ${risk.reasons[0] || 'menunggu settlement'}`);
   render();
