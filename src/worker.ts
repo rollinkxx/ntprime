@@ -68,6 +68,14 @@ const DEMO_CANDLES = (n = 72) => Array.from({ length: n }, (_, i) => {
 
 type Candle = { time: number; open: number; high: number; low: number; close: number };
 function normalizeCandle(value: unknown): Candle | null {
+  if (Array.isArray(value)) {
+    const values = value.map(item => typeof item === 'number' ? item : typeof item === 'string' ? Number(item) : NaN);
+    if (values.length >= 5 && values.slice(0, 5).every(Number.isFinite)) {
+      const [rawTime, open, high, low, close] = values;
+      return { time: rawTime < 10_000_000_000 ? rawTime * 1000 : rawTime, open, high, low, close };
+    }
+    return null;
+  }
   if (!value || typeof value !== 'object') return null;
   const item = value as Record<string, unknown>;
   const number = (...keys: string[]) => {
