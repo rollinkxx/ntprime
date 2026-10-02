@@ -5,7 +5,7 @@ export interface Env {
   STOCKITY_API_BASE?: string;
 }
 
-type Session = { token: string; apiToken?: string; createdAt: number; liveEnabled: boolean };
+type Session = { token: string; deviceId?: string; createdAt: number; liveEnabled: boolean };
 const ALLOWED = new Set(['/platform/private/v2/profile', '/bank/v1/read', '/bo-assets/v6/assets', '/candles/v1/', '/bo-deals-history/v3/deals/trade']);
 const DEMO_ASSETS = [
   { ric: 'EUR/USD', name: 'EUR/USD', typeName: 'Currencies' }, { ric: 'GBP/USD-DXF', name: 'GBP/USD', typeName: 'Currencies' },
@@ -35,7 +35,12 @@ async function upstream(request: Request, env: Env, session: Session, path: stri
   const base = env.STOCKITY_API_BASE || 'https://api.stockity1.id';
   const target = new URL(path + search, base);
   const headers = new Headers(request.headers); headers.delete('host'); headers.set('accept', 'application/json');
-  if (session.token) headers.set('authorization', `Bearer ${session.token}`);
+  if (session.token) {
+    headers.set('Authorization-Token', session.token);
+    headers.set('authorization', `Bearer ${session.token}`);
+  }
+  if (session.deviceId) headers.set('Device-Id', session.deviceId);
+  headers.set('Device-Type', 'web'); headers.set('Authorization-Version', '2');
   return fetch(target, { method: request.method, headers, body: request.method === 'GET' ? undefined : await request.text() });
 }
 
@@ -64,9 +69,9 @@ export default { async fetch(request: Request, env: Env): Promise<Response> {
     });
     const data = await r.json().catch(() => ({})) as any;
     if (!r.ok) return json({ error: upstreamError(data, 'Login Stockity gagal.'), upstreamStatus: r.status }, r.status);
-    const token = data?.token || data?.auth_token || data?.access_token || data?.data?.token;
+    const token = r.headers.get('Authorization-Token') || r.headers.get('authorization-token') || data?.authtoken || data?.authToken || data?.token || data?.auth_token || data?.access_token || data?.data?.authtoken || data?.data?.authToken || data?.data?.token || data?.data?.auth_token || data?.data?.access_token;
     if (!token) return json({ error: 'Login berhasil tetapi token tidak ditemukan dari respons Stockity.', upstream: data }, 502);
-    const s = await seal({ token, createdAt: Date.now(), liveEnabled: false }, secret);
+    const s = await seal({ token, deviceId, createdAt: Date.now(), liveEnabled: false }, secret);
     return json({ ok: true, profile: data?.user || data?.profile || null, liveEnabled: false }, 200, { 'set-cookie': cookie(s) });
   }
   if (url.pathname === '/api/auth/logout') return json({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
