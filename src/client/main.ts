@@ -23,6 +23,18 @@ async function refreshFeed(silent = false) {
     render();
   } catch (error) { if (!silent) toast((error as Error).message); }
 }
+async function restoreSession() {
+  try {
+    const session = await api('/api/session');
+    if (session.authenticated) {
+      state.logged = true;
+      await refreshFeed(true);
+      render();
+    }
+  } catch {
+    // The cockpit remains usable in explicit demo fallback mode when no session exists.
+  }
+}
 function settlePaperTrade(exitPrice: number) {
   const trade = state.openPaperTrade; if (!trade) return;
   const won = trade.direction === 'CALL' ? exitPrice > trade.entryPrice : exitPrice < trade.entryPrice;
@@ -80,3 +92,4 @@ async function login() {
   document.getElementById('loginForm')?.addEventListener('submit', async event => { event.preventDefault(); const submit = document.getElementById('loginSubmit') as HTMLButtonElement; const error = $('#loginError'); const password = (document.getElementById('loginPassword') as HTMLInputElement).value; submit.disabled = true; try { const otpStep = submit.dataset.otp === 'true'; const result = await api(otpStep ? '/api/auth/2fa' : '/api/auth/login', { method: 'POST', body: JSON.stringify(otpStep ? { password, otp: (document.getElementById('loginOtp') as HTMLInputElement).value } : { email: (document.getElementById('loginEmail') as HTMLInputElement).value.trim(), password }) }); if (result.twoFactorRequired) { submit.dataset.otp = 'true'; (document.getElementById('loginOtpWrap') as HTMLElement).hidden = false; submit.disabled = false; submit.textContent = 'Verifikasi OTP'; return; } state.logged = true; close(); await refreshFeed(true); toast('Login read-only berhasil. Chart Stockity live aktif; order tetap virtual.'); render(); } catch (caught) { error.textContent = (caught as Error).message; submit.disabled = false; } });
 }
 render();
+void restoreSession();
