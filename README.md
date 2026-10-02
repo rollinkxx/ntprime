@@ -4,7 +4,7 @@ Newton Prime web cockpit reconstructed from the supplied APK. It runs as a Cloud
 
 ## Important
 
-Demo is the default mode. The Worker never stores the raw Stockity password; it exchanges it over HTTPS for a token and seals that token in an HttpOnly, Secure, SameSite=None cookie. Set the `SESSION_SECRET` Worker secret before enabling login.
+Demo is the default mode. The Worker never stores the raw Stockity password; it exchanges it over HTTPS for a token and seals that token in an HttpOnly, Secure, SameSite=None cookie. Set the `SESSION_SECRET` Worker secret before enabling login. The secret may be any strong random string; the Worker derives a fixed-size AES-256 key from it.
 
 The adapter allowlists the Stockity endpoints observed in the APK. The API contract for live order submission is intentionally not guessed: `/api/trade` returns a clear 501 until an official/authorized order contract is configured. This prevents a UI click from silently sending a malformed real-money order.
 

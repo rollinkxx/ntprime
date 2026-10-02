@@ -19,11 +19,17 @@ const DEMO_CANDLES = (n = 72) => Array.from({ length: n }, (_, i) => {
 
 const enc = (v: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(v))).replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
 const dec = (s: string) => Uint8Array.from(atob(s.replaceAll('-', '+').replaceAll('_', '/') + '='.repeat((4 - s.length % 4) % 4)), c => c.charCodeAt(0));
-async function key(secret: string) { return crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']); }
+// Cloudflare secrets are arbitrary strings (often 64-char hex). Derive a
+// fixed-size AES-256 key instead of passing the raw secret to importKey.
+async function key(secret: string) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(secret));
+  return crypto.subtle.importKey('raw', digest, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+}
 async function seal(session: Session, secret: string) { const iv = crypto.getRandomValues(new Uint8Array(12)); const c = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await key(secret), new TextEncoder().encode(JSON.stringify(session))); return `${enc(iv.buffer)}.${enc(c)}`; }
 async function open(value: string | undefined, secret: string): Promise<Session | null> { try { if (!value) return null; const [iv, c] = value.split('.'); const p = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: dec(iv) }, await key(secret), dec(c)); return JSON.parse(new TextDecoder().decode(p)); } catch { return null; } }
 const json = (data: unknown, status = 200, headers: HeadersInit = {}) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } });
 const cookie = (v: string, maxAge = 86400) => `np_session=${v}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${maxAge}`;
+const upstreamError = (data: any, fallback: string) => data?.message || data?.error || data?.errors?.[0]?.context?.message || data?.errors?.[0]?.message || fallback;
 
 async function upstream(request: Request, env: Env, session: Session, path: string, search = '') {
   const base = env.STOCKITY_API_BASE || 'https://api.stockity1.id';
@@ -45,9 +51,19 @@ export default { async fetch(request: Request, env: Env): Promise<Response> {
     const body = await request.json().catch(() => ({})) as { email?: string; password?: string };
     if (!body.email || !body.password) return json({ error: 'Email dan password wajib diisi.' }, 400);
     const base = env.STOCKITY_API_BASE || 'https://api.stockity1.id';
-    const r = await fetch(new URL('/passport/v2/sign_in', base), { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify({ email: body.email, password: body.password }) });
+    const deviceId = crypto.randomUUID().replaceAll('-', '');
+    const r = await fetch(new URL('/passport/v2/sign_in', base), {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json', accept: 'application/json',
+        'user-agent': request.headers.get('user-agent') || 'Mozilla/5.0 (compatible; NewtonPrime/1.0)',
+        origin: new URL(base).origin,
+        'Device-Id': deviceId, 'Device-Type': 'web', 'Authorization-Version': '2'
+      },
+      body: JSON.stringify({ email: body.email, password: body.password, device: { id: deviceId, type: 'web' } })
+    });
     const data = await r.json().catch(() => ({})) as any;
-    if (!r.ok) return json({ error: data?.message || 'Login Stockity gagal.', upstreamStatus: r.status }, r.status);
+    if (!r.ok) return json({ error: upstreamError(data, 'Login Stockity gagal.'), upstreamStatus: r.status }, r.status);
     const token = data?.token || data?.auth_token || data?.access_token || data?.data?.token;
     if (!token) return json({ error: 'Login berhasil tetapi token tidak ditemukan dari respons Stockity.', upstream: data }, 502);
     const s = await seal({ token, createdAt: Date.now(), liveEnabled: false }, secret);
