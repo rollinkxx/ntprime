@@ -1,0 +1,662 @@
+[
+  {
+    "ric": "AUD/CAD",
+    "name": "AUD/CAD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/ZMFhonz8jylHGHcsbQMjFg_icon.png"
+  },
+  {
+    "ric": "Z-AUD/CAD2",
+    "name": "AUD/CAD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/0AUFXxjDeFyerx0tPR5r6A_icon.png"
+  },
+  {
+    "ric": "AUDCHF",
+    "name": "AUD/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/7mmqJ6HmvrT3d5SvlxydpQ_icon.png"
+  },
+  {
+    "ric": "AUDDKK",
+    "name": "AUD/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/UGmx-meuzi8tJYemDzNZ-w_icon.png"
+  },
+  {
+    "ric": "AUDHUF",
+    "name": "AUD/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/X2Dcuh2MdIdGtN5WNNiHBA_icon.png"
+  },
+  {
+    "ric": "AUD/JPY",
+    "name": "AUD/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/-W4q8_BMm9htoCStYel7rw_icon.png"
+  },
+  {
+    "ric": "AUDNOK",
+    "name": "AUD/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/F_caf15gMJeSfr0q45GhKw_icon.png"
+  },
+  {
+    "ric": "AUD/NZD-AFX",
+    "name": "AUD/NZD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/kRv7YQOqqruy8NLNpNloTw_icon.png"
+  },
+  {
+    "ric": "AUDSEK",
+    "name": "AUD/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/fsAeW_O6xt-cFdKXzuzSag_icon.png"
+  },
+  {
+    "ric": "AUDSGD",
+    "name": "AUD/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/3lqMFicVU4a844MBknsJxg_icon.png"
+  },
+  {
+    "ric": "AUD/USD",
+    "name": "AUD/USD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/oJwF9OBMqahH23wQhdAyWw_icon.png"
+  },
+  {
+    "ric": "Z-AUD/USD2",
+    "name": "AUD/USD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/3YCtk3X51x6vMKrboSfgdA_icon.png"
+  },
+  {
+    "ric": "AUDZAR",
+    "name": "AUD/ZAR",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/xgvWa1ea6LuyYQBTpK5lGQ_icon.png"
+  },
+  {
+    "ric": "CAD/CHF",
+    "name": "CAD/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/tM2NPwTN533zcP4fIR7UhQ_icon.png"
+  },
+  {
+    "ric": "CADDKK",
+    "name": "CAD/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/5jxNC0hbJDonjic12s-CUQ_icon.png"
+  },
+  {
+    "ric": "CADJPY",
+    "name": "CAD/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2k5GN6BOn7kJq3r_XicwMA_icon.png"
+  },
+  {
+    "ric": "CADMXN",
+    "name": "CAD/MXN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/k_F6rDxnsi37_osAoUnNcA_icon.png"
+  },
+  {
+    "ric": "CADNOK",
+    "name": "CAD/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Jeh2S0MDIxJfLb3RUX6njg_icon.png"
+  },
+  {
+    "ric": "CADSEK",
+    "name": "CAD/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/6lve9zwfv69McJDavIM14Q_icon.png"
+  },
+  {
+    "ric": "CADSGD",
+    "name": "CAD/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/689dF6U43jjlHHlnKxBGWA_icon.png"
+  },
+  {
+    "ric": "CHFDKK",
+    "name": "CHF/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/4pOQ0zosrs2OoSYP40Lsbg_icon.png"
+  },
+  {
+    "ric": "CHFHUF",
+    "name": "CHF/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/0fFTcxKJ8n3BrHJXTXQDzQ_icon.png"
+  },
+  {
+    "ric": "CHF/JPY",
+    "name": "CHF/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/1537315329_pic_05c25f9a.png"
+  },
+  {
+    "ric": "Z-CHF/JPY2",
+    "name": "CHF/JPY (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Pfv5D7urBWg136fGLuxHqQ_icon.png"
+  },
+  {
+    "ric": "CHFNOK",
+    "name": "CHF/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/BOLz57XD-CRyEiBjhnVnhQ_icon.png"
+  },
+  {
+    "ric": "CHFPLN",
+    "name": "CHF/PLN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/WTfW3wXXc7PgE9eMxggLmg_icon.png"
+  },
+  {
+    "ric": "CHFSEK",
+    "name": "CHF/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/N0hPzApKeSeIWkQJ1JQq9g_icon.png"
+  },
+  {
+    "ric": "CHFSGD",
+    "name": "CHF/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2mVuOgdY3w7ZsvGt5EXsNA_icon.png"
+  },
+  {
+    "ric": "EUR/AUD-AFX-CFH2",
+    "name": "EUR/AUD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Bh8u249CU_C1zw_eDkKPMg_icon.png"
+  },
+  {
+    "ric": "EUR/CAD",
+    "name": "EUR/CAD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/rDPBwuvcxPAljEbKEu0IIQ_icon.png"
+  },
+  {
+    "ric": "Z-EUR/CAD2",
+    "name": "EUR/CAD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/eafem_mnFuBG6BsmFryWzw_icon.png"
+  },
+  {
+    "ric": "EUR/CHF-AFX-CFH2",
+    "name": "EUR/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/hMNtXb1f-ScgyYxJoMxGGw_icon.png"
+  },
+  {
+    "ric": "EUR/GBP",
+    "name": "EUR/GBP",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/TEt1N97UHhAI9ZkUmAkzsQ_icon.png"
+  },
+  {
+    "ric": "Z-EUR/GBP2",
+    "name": "EUR/GBP (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Ctjlfnel2jWGymXy5YDvLg_icon.png"
+  },
+  {
+    "ric": "EUR/HKD-AFX-CFH2",
+    "name": "EUR/HKD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/1614678319_pic_52454144.png"
+  },
+  {
+    "ric": "EURHUF",
+    "name": "EUR/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/INGx0Z5zMa09jiwA59-RNA_icon.png"
+  },
+  {
+    "ric": "EURILS",
+    "name": "EUR/ILS",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/j0kAM3MrY5QsJLgDR1B_Qg_icon.png"
+  },
+  {
+    "ric": "EUR/JPY",
+    "name": "EUR/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/UitpJrzEDdq04GMIxieAmQ_icon.png"
+  },
+  {
+    "ric": "EUR/MXN-AFX",
+    "name": "EUR/MXN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/1597662419_pic_64dc5b17.png"
+  },
+  {
+    "ric": "EURNOK",
+    "name": "EUR/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/jj17HAEuqtFriYHVhohlVw_icon.png"
+  },
+  {
+    "ric": "EUR/NZD-AFX",
+    "name": "EUR/NZD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/1597662451_pic_e29fd413.png"
+  },
+  {
+    "ric": "EURPLN",
+    "name": "EUR/PLN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/a_1mI6Td8fOraa_rlUr40g_icon.png"
+  },
+  {
+    "ric": "EURSEK",
+    "name": "EUR/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/b_2VAeYHIruxWhXdULa85w_icon.png"
+  },
+  {
+    "ric": "EURSGD",
+    "name": "EUR/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/n12M8qdwlE2K--1qVrGw-Q_icon.png"
+  },
+  {
+    "ric": "EURO",
+    "name": "EUR/USD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/G8MyvpPF1XH9MPNAf6_n2Q_icon.png"
+  },
+  {
+    "ric": "Z-EUR/USD2",
+    "name": "EUR/USD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/7J9vhK1M1T4NS7Ib5Lnh0Q_icon.png"
+  },
+  {
+    "ric": "EURZAR",
+    "name": "EUR/ZAR",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/5TzS1UY8KD60u64_YnJzHw_icon.png"
+  },
+  {
+    "ric": "BARUSD-OTC",
+    "name": "FC Barcelona Token (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/eGQOIIw2H1nF0y-Lr2QvoA_icon.png"
+  },
+  {
+    "ric": "GBP/AUD",
+    "name": "GBP/AUD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Ca89vx39wh5KgYySqGPiLw_icon.png"
+  },
+  {
+    "ric": "GBPCAD",
+    "name": "GBP/CAD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/i9No0PcWbwQh91zLYUva5w_icon.png"
+  },
+  {
+    "ric": "GBP/CHF-AFX",
+    "name": "GBP/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/_acBqwY3yv7e7GuH-jf1zQ_icon.png"
+  },
+  {
+    "ric": "Z-GBP/CHF2",
+    "name": "GBP/CHF (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/HWZfMqCu5Eqze_KRUU07mw_icon.png"
+  },
+  {
+    "ric": "GBPCZK",
+    "name": "GBP/CZK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/U9AGVDnUqSxCiyJ_i-HmeQ_icon.png"
+  },
+  {
+    "ric": "GBPDKK",
+    "name": "GBP/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/iRYWGcSRWoXhy4PgusQEPA_icon.png"
+  },
+  {
+    "ric": "GBPHKD",
+    "name": "GBP/HKD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/rCC0ZEUP5KO2ksrJ-P84dg_icon.png"
+  },
+  {
+    "ric": "GBPHUF",
+    "name": "GBP/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/V8WbGHq4p15rNgVGPz9pEg_icon.png"
+  },
+  {
+    "ric": "GBP/JPY",
+    "name": "GBP/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/9bjssuSGObWAtAMVwfbNSQ_icon.png"
+  },
+  {
+    "ric": "Z-GBP/JPY2",
+    "name": "GBP/JPY (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/c4RvFVUplvRHGbuzGt2gAA_icon.png"
+  },
+  {
+    "ric": "GBPMXN",
+    "name": "GBP/MXN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/d1ml53Id4bA02CxHG-_eDA_icon.png"
+  },
+  {
+    "ric": "GBPNOK",
+    "name": "GBP/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/g8gCnHu--yUcES3642CEzA_icon.png"
+  },
+  {
+    "ric": "GBP/NZD-AFX",
+    "name": "GBP/NZD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/ITfupiMnZo4LbrOOIkCwaQ_icon.png"
+  },
+  {
+    "ric": "Z-GBP/NZD2",
+    "name": "GBP/NZD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/pasos_tiUJumwLqTqSYc_A_icon.png"
+  },
+  {
+    "ric": "GBPPLN",
+    "name": "GBP/PLN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Xmc6xTYk0TJz0rbyNc8uPQ_icon.png"
+  },
+  {
+    "ric": "GBPSGD",
+    "name": "GBP/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/ysRdtQ-RSCOFhdmFus91TQ_icon.png"
+  },
+  {
+    "ric": "GBPTRY",
+    "name": "GBP/TRY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/upa1Y1Dcrex7iKf0pay1CA_icon.png"
+  },
+  {
+    "ric": "GBP/USD-DXF",
+    "name": "GBP/USD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/n52pVNPhHk8Eh_2cIAK7Aw_icon.png"
+  },
+  {
+    "ric": "Z-GBP/USD2",
+    "name": "GBP/USD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/szSMDElnGDFKwsALSXcvfg_icon.png"
+  },
+  {
+    "ric": "NOKJPY",
+    "name": "NOK/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/us69r_pevQNParQI5uXrlw_icon.png"
+  },
+  {
+    "ric": "NOKSEK",
+    "name": "NOK/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2i211h4b17UJQIOFZKlOlw_icon.png"
+  },
+  {
+    "ric": "NZDCAD",
+    "name": "NZD/CAD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/TWGRmFgx3A2isPhgVv4yWg_icon.png"
+  },
+  {
+    "ric": "NZDCHF",
+    "name": "NZD/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/CnTZH2eFgqpmAHZUdvW7Gg_icon.png"
+  },
+  {
+    "ric": "NZDDKK",
+    "name": "NZD/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/PhbQ9LQs-Z3U3xu8_gVUbQ_icon.png"
+  },
+  {
+    "ric": "NZDHUF",
+    "name": "NZD/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/Gcazx6FnQnLmFBvxOhLVXg_icon.png"
+  },
+  {
+    "ric": "NZD/JPY",
+    "name": "NZD/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2bhr-uNN1E9C74l3aSZYSw_icon.png"
+  },
+  {
+    "ric": "NZDNOK",
+    "name": "NZD/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/t8mmhpVseZ1hKZx9m3Pv2A_icon.png"
+  },
+  {
+    "ric": "NZDSEK",
+    "name": "NZD/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/sPXZSJ8vYm2JHstLu6CO6w_icon.png"
+  },
+  {
+    "ric": "NZDSGD",
+    "name": "NZD/SGD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2zgE6DuFPAQqWbQPLdA1tw_icon.png"
+  },
+  {
+    "ric": "NZD/USD",
+    "name": "NZD/USD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/AToi3_kPbpxwRQpw7_Y4Ng_icon.png"
+  },
+  {
+    "ric": "Z-NZD/USD2",
+    "name": "NZD/USD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/86hIxkzF-Hqmg6Nbqfty5A_icon.png"
+  },
+  {
+    "ric": "SEKJPY",
+    "name": "SEK/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/7IsiTbqhB1I_-G74YjJbhA_icon.png"
+  },
+  {
+    "ric": "SGDHKD",
+    "name": "SGD/HKD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/rYaNlWUWVXeenGVcnXxBQA_icon.png"
+  },
+  {
+    "ric": "SGDJPY",
+    "name": "SGD/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/I52EvgjKIsNskji5UzpPvA_icon.png"
+  },
+  {
+    "ric": "USD/CAD",
+    "name": "USD/CAD",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/rmOtZSFCAgBR0OZijjJB6Q_icon.png"
+  },
+  {
+    "ric": "Z-USD/CAD2",
+    "name": "USD/CAD (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/hkMDh0teN6_UsP6ek0ncFw_icon.png"
+  },
+  {
+    "ric": "USD/CHF",
+    "name": "USD/CHF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/aVwPGVt_IDbCg5dxfrtkXQ_icon.png"
+  },
+  {
+    "ric": "USDCZK",
+    "name": "USD/CZK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/m0ywNl1F8z29cQJc_In3JQ_icon.png"
+  },
+  {
+    "ric": "USD/DKK",
+    "name": "USD/DKK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/g5OoGNXX5DiGCgbZl1NhvA_icon.png"
+  },
+  {
+    "ric": "USDHUF",
+    "name": "USD/HUF",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/2jE4O35WvE59FvnO4J9-rw_icon.png"
+  },
+  {
+    "ric": "USDILS",
+    "name": "USD/ILS",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/QXPnosuiyZU2ssLnaHk3HA_icon.png"
+  },
+  {
+    "ric": "USD/JPY-DXF",
+    "name": "USD/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/iOnRivGsnS4D9bz8623ovA_icon.png"
+  },
+  {
+    "ric": "Z-USD/JPY2",
+    "name": "USD/JPY (OTC)",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/F6_rrcpHOWwt1NXKAgqB2g_icon.png"
+  },
+  {
+    "ric": "USDMXN",
+    "name": "USD/MXN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/lQAagkgyVPiGhsXrSX-g3A_icon.png"
+  },
+  {
+    "ric": "USD/NOK",
+    "name": "USD/NOK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/VnPF8p5km_vKabcBLrm5OQ_icon.png"
+  },
+  {
+    "ric": "USDPLN",
+    "name": "USD/PLN",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/9jJQ-sqyjnkLiHdTTka8aw_icon.png"
+  },
+  {
+    "ric": "USDSEK",
+    "name": "USD/SEK",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/R-xSQelTo8J-BjiNexD0UQ_icon.png"
+  },
+  {
+    "ric": "USDZAR",
+    "name": "USD/ZAR",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/6dwBuKvX_W-ccmUw4u8-Jw_icon.png"
+  },
+  {
+    "ric": "ZARJPY",
+    "name": "ZAR/JPY",
+    "typeName": "Currencies",
+    "iconUrl": "https://stockity.id/uploads/asset/7IuKgATHiVX-zjvmdqoreg_icon.png"
+  },
+  {
+    "ric": "AAVUSD-OTC",
+    "name": "Aave (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/uYwHV8nqpe22YMmG04-SRw_icon.png"
+  },
+  {
+    "ric": "BTCUSD-OTC",
+    "name": "Bitcoin (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/bhUq038CJpj7FPx0zbHKpg_icon.png"
+  },
+  {
+    "ric": "BCHUSD-OTC",
+    "name": "Bitcoin Cash (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/J-Y1cqSAClZY1bLIFHbdEQ_icon.png"
+  },
+  {
+    "ric": "ADAUSD-OTC",
+    "name": "Cardano (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/9J3UoesKxrR4untdTAPdew_icon.png"
+  },
+  {
+    "ric": "LNKUSD-OTC",
+    "name": "Chainlink (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/nEf28gSVueTMNu2VzFv1kg_icon.png"
+  },
+  {
+    "ric": "Z-CRY/IDX",
+    "name": "Crypto IDX",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/GhExjv-VAt2P9D7Bf4OJWQ_icon.png"
+  },
+  {
+    "ric": "ETHUSD-OTC",
+    "name": "Ethereum (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/5m1ZyznmFhtDpKYeSqpBPQ_icon.png"
+  },
+  {
+    "ric": "KSMUSD-OTC",
+    "name": "Kusama (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/gz8KQmItMMDohK3JdZhJoQ_icon.png"
+  },
+  {
+    "ric": "LTC/USD-CXDXF",
+    "name": "Litecoin",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/vS7HBI8tmylLQIrXnFfvbA_icon.png"
+  },
+  {
+    "ric": "CAKUSD-OTC",
+    "name": "Pancake Swap (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/6CaOijaQOm7wzn9B9UkXiw_icon.png"
+  },
+  {
+    "ric": "SOLUSD-OTC",
+    "name": "Solana (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/N-_yOmf7IqPnhfiVt5lSzg_icon.png"
+  },
+  {
+    "ric": "TONUSD-OTC",
+    "name": "Toncoin (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/9NxGQr727GXnCwgNdzXiNg_icon.png"
+  },
+  {
+    "ric": "UNIUSD-OTC",
+    "name": "Uniswap (OTC)",
+    "typeName": "Crypto",
+    "iconUrl": "https://stockity.id/uploads/asset/N22K3pBwqJcyY1A-7xp9Pg_icon.png"
+  }
+]
