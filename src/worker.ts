@@ -128,6 +128,10 @@ function extractSessionCookie(headers: Headers) {
 async function responseJson(response: Response): Promise<StockityResponse> {
   return await response.json().catch(() => ({})) as StockityResponse;
 }
+function responsePayload(data: StockityResponse): Record<string, unknown> {
+  const nested = data.data;
+  return nested && typeof nested === 'object' && !Array.isArray(nested) ? nested : data;
+}
 function validEmail(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0 && value.length <= 320;
 }
@@ -182,7 +186,7 @@ export default {
     const url = new URL(request.url);
     const secret = env.SESSION_SECRET;
 
-    if (url.pathname === '/api/health') return json({ ok: true, app: 'newton-prime', mode: 'demo-first' });
+    if (url.pathname === '/api/health') return json({ ok: true, app: 'newton-prime', mode: 'demo-first', authAdapter: 'stockity-v2-data-envelope' });
 
     if (url.pathname === '/api/session' && request.method === 'GET') {
       const session = secret ? await open(cookieValue(request, 'np_session'), secret) : null;
@@ -238,17 +242,18 @@ export default {
           return json({ error: upstreamError(data, 'Login Stockity gagal.') }, response.status);
         }
 
+        const payload = responsePayload(data);
         const token = readString(response.headers.get('Authorization-Token'))
           || readString(response.headers.get('authorization-token'))
-          || readString(data.authtoken);
-        const userId = readString(data.user_id);
+          || readString(payload.authtoken);
+        const userId = readString(payload.user_id);
         if (!token || !userId) {
-          return json({ error: 'Respons login Stockity tidak memuat authtoken dan user_id yang diwajibkan APK.' }, 502);
+          return json({ error: 'Stockity merespons tetapi data sesi tidak lengkap atau tidak dikenali. Coba lagi.' }, 502);
         }
 
         const session: Session = { token, userId, deviceId, apiBase: base, createdAt: Date.now(), liveEnabled: false };
         const sealed = await seal(session, secret);
-        return json({ ok: true, profile: data.user || data.profile || null, liveEnabled: false }, 200, { 'set-cookie': sessionCookie(sealed) });
+        return json({ ok: true, profile: payload.user || payload.profile || null, liveEnabled: false }, 200, { 'set-cookie': sessionCookie(sealed) });
       }
 
       return json({ error: lastError instanceof Error ? `Tidak dapat terhubung ke Stockity: ${lastError.message}` : 'Tidak dapat terhubung ke host API Stockity.' }, 502);
@@ -292,7 +297,7 @@ export default {
       if (!otpResponse.ok) {
         return json({ error: upstreamError(otpData, 'Kode OTP salah atau sudah kedaluwarsa. Coba lagi.') }, 400);
       }
-      const otpPayload = otpData.data || otpData;
+      const otpPayload = responsePayload(otpData);
       const twoFaToken = readString(otpPayload['2fa_token']);
       if (!twoFaToken) {
         return json({ error: 'Token verifikasi OTP tidak ditemukan dalam respons Stockity.' }, 502);
@@ -323,12 +328,13 @@ export default {
         return json({ error: upstreamError(loginData, 'Login Stockity gagal setelah verifikasi OTP.') }, loginResponse.status);
       }
 
+      const loginPayload = responsePayload(loginData);
       const token = readString(loginResponse.headers.get('Authorization-Token'))
         || readString(loginResponse.headers.get('authorization-token'))
-        || readString(loginData.authtoken);
-      const userId = readString(loginData.user_id);
+        || readString(loginPayload.authtoken);
+      const userId = readString(loginPayload.user_id);
       if (!token || !userId) {
-        return json({ error: 'Respons login Stockity tidak memuat authtoken dan user_id yang diwajibkan APK.' }, 502);
+        return json({ error: 'Stockity merespons tetapi data sesi tidak lengkap atau tidak dikenali. Coba lagi.' }, 502);
       }
 
       const session: Session = {
@@ -340,7 +346,7 @@ export default {
         liveEnabled: false,
       };
       const sealed = await seal(session, secret);
-      return json({ ok: true, profile: loginData.user || loginData.profile || null, liveEnabled: false }, 200, { 'set-cookie': sessionCookie(sealed) });
+      return json({ ok: true, profile: loginPayload.user || loginPayload.profile || null, liveEnabled: false }, 200, { 'set-cookie': sessionCookie(sealed) });
     }
 
     if (url.pathname === '/api/auth/logout') {
