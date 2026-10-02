@@ -357,8 +357,13 @@ export default {
       if (!secret) return json({ error: 'SESSION_SECRET belum dikonfigurasi.' }, 503);
       const session = await open(cookieValue(request, 'np_session'), secret);
       if (!session?.token) return json({ error: 'Sesi tidak ditemukan.' }, 401);
-      const next = await seal({ ...session, liveEnabled: true }, secret);
-      return json({ ok: true, liveEnabled: true }, 200, { 'set-cookie': sessionCookie(next) });
+      // Fail closed: a live flag is not a trading connection. The verified APK
+      // contract still requires a Phoenix/WebSocket handshake, join acknowledgement,
+      // heartbeat, reconnect handling, and settlement reconciliation.
+      return json({
+        error: 'Live trading belum tersedia: adapter WebSocket/order resmi belum terverifikasi dan tidak ada transaksi yang dikirim.',
+        liveEnabled: false,
+      }, 501);
     }
 
     if (url.pathname === '/api/data/assets') return json({ assets: DEMO_ASSETS, source: 'demo' });
@@ -383,8 +388,11 @@ export default {
       if (!secret) return json({ error: 'SESSION_SECRET belum dikonfigurasi.' }, 503);
       const session = await open(cookieValue(request, 'np_session'), secret);
       if (!session?.token) return json({ error: 'Login Stockity diperlukan.' }, 401);
-      if (!session.liveEnabled) return json({ error: 'Live mode masih terkunci. Aktifkan live mode terlebih dahulu.' }, 423);
-      return json({ error: 'Live order adapter membutuhkan kontrak order resmi dari Stockity; tidak ada order yang dikirim.' }, 501);
+      return json({
+        error: 'Order broker belum tersedia: kontrak resmi, WebSocket Phoenix, acknowledgement, dan settlement belum terverifikasi. Tidak ada order yang dikirim.',
+        submitted: false,
+        account: 'broker-session-authenticated',
+      }, 501);
     }
 
     const asset = await env.ASSETS.fetch(request);
