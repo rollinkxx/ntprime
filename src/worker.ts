@@ -58,6 +58,38 @@ const DEMO_CANDLES = (n = 72) => Array.from({ length: n }, (_, i) => {
   return { time: t, open, high: Math.max(open, close) + 0.45, low: Math.min(open, close) - 0.45, close };
 });
 
+type Candle = { time: number; open: number; high: number; low: number; close: number };
+function normalizeCandle(value: unknown): Candle | null {
+  if (!value || typeof value !== 'object') return null;
+  const item = value as Record<string, unknown>;
+  const number = (...keys: string[]) => {
+    for (const key of keys) {
+      const candidate = item[key];
+      const parsed = typeof candidate === 'number' ? candidate : typeof candidate === 'string' ? Number(candidate) : NaN;
+      if (Number.isFinite(parsed)) return parsed;
+    }
+    return NaN;
+  };
+  const time = number('time', 'timestamp', 'ts', 't', 'start', 'from');
+  const open = number('open', 'o'); const high = number('high', 'h');
+  const low = number('low', 'l'); const close = number('close', 'c');
+  if (![time, open, high, low, close].every(Number.isFinite)) return null;
+  return { time: time < 10_000_000_000 ? time * 1000 : time, open, high, low, close };
+}
+function findCandles(value: unknown): Candle[] {
+  if (Array.isArray(value)) {
+    const direct = value.map(normalizeCandle).filter((item): item is Candle => Boolean(item));
+    if (direct.length) return direct;
+    for (const nested of value) { const found = findCandles(nested); if (found.length) return found; }
+  }
+  if (value && typeof value === 'object') {
+    for (const nested of Object.values(value as Record<string, unknown>)) {
+      const found = findCandles(nested); if (found.length) return found;
+    }
+  }
+  return [];
+}
+
 const enc = (v: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(v))).replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
 const dec = (s: string) => Uint8Array.from(atob(s.replaceAll('-', '+').replaceAll('_', '/') + '='.repeat((4 - s.length % 4) % 4)), c => c.charCodeAt(0));
 
@@ -366,8 +398,27 @@ export default {
       }, 501);
     }
 
-    if (url.pathname === '/api/data/assets') return json({ assets: DEMO_ASSETS, source: 'demo' });
-    if (url.pathname === '/api/data/candles') return json({ candles: DEMO_CANDLES(), source: 'demo' });
+    if (url.pathname === '/api/data/assets') {
+      if (!secret) return json({ assets: DEMO_ASSETS, source: 'demo', authenticated: false });
+      const session = await open(cookieValue(request, 'np_session'), secret);
+      if (!session?.token) return json({ assets: DEMO_ASSETS, source: 'demo', authenticated: false });
+      const response = await upstreamRead(request, env, session, '/bo-assets/v6/assets', '');
+      const data = await response.json().catch(() => ({}));
+      return response.ok ? json({ assets: data, source: 'stockity', authenticated: true }) : json({ assets: DEMO_ASSETS, source: 'demo-fallback', authenticated: true });
+    }
+    if (url.pathname === '/api/data/candles') {
+      if (!secret) return json({ candles: DEMO_CANDLES(), source: 'demo', authenticated: false });
+      const session = await open(cookieValue(request, 'np_session'), secret);
+      if (!session?.token) return json({ candles: DEMO_CANDLES(), source: 'demo', authenticated: false });
+      const asset = url.searchParams.get('asset') || 'Crypto IDX';
+      const end = Math.floor(Date.now() / 1000); const start = end - 72 * 60;
+      const query = new URLSearchParams({ asset, ric: asset, period: '60', interval: '60', start: String(start), end: String(end) });
+      const response = await upstreamRead(request, env, session, '/candles/v1/', `?${query}`);
+      const data = await response.json().catch(() => ({}));
+      const candles = response.ok ? findCandles(data).slice(-200) : [];
+      if (candles.length >= 5) return json({ candles, source: 'stockity', authenticated: true, asset });
+      return json({ candles: DEMO_CANDLES(), source: 'demo-fallback', authenticated: true, asset, upstreamStatus: response.status }, 200);
+    }
 
     if (url.pathname.startsWith('/api/stockity/')) {
       if (!secret) return json({ error: 'SESSION_SECRET belum dikonfigurasi.' }, 503);
